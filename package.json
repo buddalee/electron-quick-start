@@ -9,7 +9,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/buddalee/electron-quick-start",
   "keywords": [
     "Electron",
     "quick",
