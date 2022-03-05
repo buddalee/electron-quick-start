@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const express   = require('express');
 
 function createWindow () {
   // Create the browser window.
@@ -13,8 +14,10 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
-
+  // mainWindow.loadFile('index.html')
+  mainWindow.loadURL('https://www.aromatale.tw')
+  const contents = mainWindow.webContents
+  console.log(contents)
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
@@ -22,9 +25,35 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  createWindow()
+app.on('ready', () => {
+  updateApp = require('update-electron-app');
 
+  updateApp({
+      // repo: 'PhiloNL/electron-hello-world', // defaults to package.json
+      updateInterval: '1 hour',
+      notifyUser: true
+  });
+});
+app.whenReady().then(() => {
+  // createWindow()
+  let app = express();
+
+  app.listen(3000);
+  
+  app.get('/', function(req, res){
+     
+      res.send('Server is ready!');
+      
+  });
+  mainWindow = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    autoHideMenuBar: true,
+    useContentSize: true,
+    resizable: false,
+  });
+  mainWindow.loadURL('http://localhost:3000/');
+  mainWindow.focus();
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
